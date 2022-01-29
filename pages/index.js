@@ -5,6 +5,8 @@ import appConfig from "../config.json";
 import {useRouter} from 'next/router';
 import {useState,useEffect} from 'react';
 
+
+
 function Titulo(props){
   console.log(props)
   const Tag = props.tag || "h1";
@@ -39,13 +41,15 @@ function Titulo(props){
     //const username = 'OnlyLuiz';
     const [username, setUsername] = React.useState('');
     const roteamento = useRouter();
-    const [image, setImage] = React.useState('http://github.com/onlyLuiz.png');
+    const [image, setImage] = React.useState('https://github.com/onlyluiz.png');
     const [dados, setDados] = useState([])
     useEffect(() => {
-        fetch(`https://api.github.com/users/${username}`)
+        fetch('https://api.github.com/users/onlyluiz')
         .then(response => response.json())
         .then(data => setDados(data))
     }, [])
+    console.log()
+
 
     
     return (
@@ -81,8 +85,7 @@ function Titulo(props){
                           console.log('alguém enviou o form');
                           window.location.href='/chat';
                           roteamento.push('/chat');
-                        }
-                        }
+                        }}
                         styleSheet={{
                             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                             width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px',
@@ -105,18 +108,20 @@ function Titulo(props){
                           }}
                         />*/}
                         <TextField
+                        type='text'
                          value={username}
                          onChange={function (event){
-                           console.log('Usuario digitou', event.target.value)
-                           //onde está o valor
-                           const valor = event.target.value;
-                           //trocar valor da variavel
-                           setUsername(valor);
-                           if(valor.length >= 2){
-                             setImage(`https://github.com/${valor}.png`);
-                           }else{
-                            setImage('http://github.com/onlyLuiz.png');
-                           }
+                            console.log('Usuario digitou', event.target.value)
+                            //onde está o valor
+                            const valor = event.target.value;
+                            //trocar valor da variavel
+                            setUsername(valor);
+
+                            if(valor.length >= 2){
+                                setImage(`https://github.com/${valor}.png`);
+                              }else{
+                               setImage('https://github.com/onlyluiz.png');
+                              }
                          }}
                             fullWidth
                             textFieldColors={{
@@ -127,7 +132,7 @@ function Titulo(props){
                                     backgroundColor: appConfig.theme.colors.neutrals[800],
                                 },
                             }}
-                          />
+                        />
                         <Button
                             type='submit'
                             label='Login'
@@ -175,7 +180,7 @@ function Titulo(props){
                                 borderRadius: '1000px'
                             }}
                         >
-                            {username} <br/>
+                            {username} <br/> 
                             {dados.location}
                         </Text>
                     </Box>
