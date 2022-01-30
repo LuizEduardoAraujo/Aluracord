@@ -1,10 +1,28 @@
 import { Box, Text, TextField, Image, Button } from '@skynexui/components';
 import React from 'react';
 import appConfig from '../config.json';
+import { createClient } from '@supabase/supabase-js';
+
+
+const SUPABASE_ANON__KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzQ4NzU3OSwiZXhwIjoxOTU5MDYzNTc5fQ.kXAda6mEkUqkTZG3GTNeh_ZFT43Ur6craN9jLtK0yfc';
+const SUPABASE_URL= 'https://itddfcakaxafrjwpakrw.supabase.co';
+const subaseClient = createClient(SUPABASE_URL, SUPABASE_ANON__KEY );
+
 
 export default function ChatPage() {
     const [mensagem, setMensagem] = React.useState('');
     const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
+
+    React.useEffect(() =>{
+        subaseClient
+        .from('mensagens')
+        .select('*')
+        .order('id', {ascending:false})
+        .then(({data}) =>{
+      console.log('Dados da consulta', data);
+      setListaDeMensagens(data);
+  });
+    }, []);
 
     /*
     // Usuário
@@ -19,18 +37,25 @@ export default function ChatPage() {
     */
     function handleNovaMensagem(novaMensagem) {
         const mensagem = {
-            id: listaDeMensagens.length + 1,
+            //id: listaDeMensagens.length + 1,
             de: 'onlyLuiz',
             texto: novaMensagem,
         };
 
-        setListaDeMensagens([
-            mensagem,
-            ...listaDeMensagens,
-        ]);
+        subaseClient
+        .from('mensagens')
+        .insert([
+            mensagem
+        ])
+        .then(({data}) => {
+            console.log('criando mensagem:', data);
+            setListaDeMensagens([
+                data[0],
+                ...listaDeMensagens,
+            ]);
+        });
         setMensagem('');
     }
-
     return (
         <Box
             styleSheet={{
@@ -148,7 +173,6 @@ function Header() {
         </>
     )
 }
-
 function MessageList(props) {
     console.log(props);
     return (
@@ -190,7 +214,7 @@ function MessageList(props) {
                                     display: 'inline-block',
                                     marginRight: '8px',
                                 }}
-                                src={`https://github.com/onlyLuiz.png`}
+                                src={`https://github.com/${mensagem.de}.png`}
                             />
                             <Text tag="strong">
                                 {mensagem.de}
@@ -205,11 +229,11 @@ function MessageList(props) {
                             >
                                 {(new Date().toLocaleDateString())}
                             </Text>
-                        </Box>
-                        {mensagem.texto}
-                    </Text>
+                         </Box>
+                            {mensagem.texto}
+                        </Text>
                 );
-            })}
+                })}
         </Box>
     )
 }

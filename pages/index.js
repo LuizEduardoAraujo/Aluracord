@@ -42,16 +42,15 @@ function Titulo(props){
     const [username, setUsername] = React.useState('');
     const roteamento = useRouter();
     const [image, setImage] = React.useState('https://github.com/onlyluiz.png');
-    const [dados, setDados] = useState([])
+    const [dados, setDados] = useState([]);
     useEffect(() => {
         fetch('https://api.github.com/users/onlyluiz')
         .then(response => response.json())
         .then(data => setDados(data))
-    }, [])
-    console.log()
-
-
+    }, []);
+      
     
+
     return (
         <>
             <Box
@@ -117,6 +116,8 @@ function Titulo(props){
                             //trocar valor da variavel
                             setUsername(valor);
 
+                            
+
                             if(valor.length >= 2){
                                 setImage(`https://github.com/${valor}.png`);
                               }else{
@@ -181,7 +182,7 @@ function Titulo(props){
                             }}
                         >
                             {username} <br/> 
-                            {dados.location}
+                          {dados.location}
                         </Text>
                     </Box>
                     {/* Photo Area */}
