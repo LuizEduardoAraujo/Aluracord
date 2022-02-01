@@ -82,8 +82,8 @@ function Titulo(props){
                         onSubmit= { function (infoDoEvento){
                           infoDoEvento.preventDefault();
                           console.log('alguém enviou o form');
-                          window.location.href='/chat';
-                          roteamento.push('/chat');
+                          //window.location.href='/chat';
+                          roteamento.push(`/chat?username=${username}`);
                         }}
                         styleSheet={{
                             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
